@@ -1,0 +1,136 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 11-11-2022 a las 19:42:52
+-- Versión del servidor: 10.4.25-MariaDB
+-- Versión de PHP: 8.1.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `porfolio`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `experiencia_laboral`
+--
+
+CREATE TABLE `experiencia_laboral` (
+  `id` int(11) NOT NULL,
+  `nombre_empresa` varchar(45) DEFAULT NULL,
+  `es_trabajo_actual` tinyint(4) DEFAULT NULL,
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `descripcion` varchar(200) DEFAULT NULL,
+  `Persona_id` int(11) NOT NULL,
+  `tipo_empleo_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `experiencia_laboral`
+--
+
+INSERT INTO `experiencia_laboral` (`id`, `nombre_empresa`, `es_trabajo_actual`, `fecha_inicio`, `fecha_fin`, `descripcion`, `Persona_id`, `tipo_empleo_id`) VALUES
+(1, 'La Ferretera Industrial SRL', 1, '2017-10-02', '0000-00-00', 'Actualmente estoy trabajando en una ferreteria industrial con mas de 60 años de trayectoria, hago tareas de venta al público y administrativas, tambien me encargo de la parte tecnica de los sistemas o', 1, 2),
+(2, 'Distool SRL', 0, '2017-04-01', '2017-09-30', 'Desempeñe tareas como corredor en ventas de herramientas industriales, fresas de corte, machos para rosca y calisuares.', 1, 2),
+(3, 'Zurich Tools SA', 0, '2012-03-01', '2017-03-30', 'Encargado y vendedor de herramientas en ferreteria industrial.', 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `persona`
+--
+
+CREATE TABLE `persona` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(45) DEFAULT NULL,
+  `apellido` varchar(45) DEFAULT NULL,
+  `domicilio` varchar(60) DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `correo` varchar(45) DEFAULT NULL,
+  `sobre_mi` varchar(300) DEFAULT NULL,
+  `url_foto` varchar(120) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `persona`
+--
+
+INSERT INTO `persona` (`id`, `nombre`, `apellido`, `domicilio`, `fecha_nacimiento`, `telefono`, `correo`, `sobre_mi`, `url_foto`) VALUES
+(1, 'Martín', 'Luboszyc', 'Av.Corrientes 4552 PB 2', '1981-11-18', '1125836065', 'martinaleluboszyc@gmail.com', 'Me llamo Martín, tengo 40 años de edad, estoy estudiando y cursando 2 carreras en programación, Full Stack Python y Full Stack Front end en argentina programa y codo a codo. Pienso dedicarme al trabajo en el rubro de empresas IT.', 'https://github.com/AleLuboszyc');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_empleo`
+--
+
+CREATE TABLE `tipo_empleo` (
+  `id` int(11) NOT NULL,
+  `nombre_tipo` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tipo_empleo`
+--
+
+INSERT INTO `tipo_empleo` (`id`, `nombre_tipo`) VALUES
+(1, 'Part Time'),
+(2, 'Full Time'),
+(3, 'Freelance'),
+(4, 'Monotributista'),
+(5, 'Informal'),
+(6, 'Emprendimiento');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `experiencia_laboral`
+--
+ALTER TABLE `experiencia_laboral`
+  ADD PRIMARY KEY (`id`,`Persona_id`,`tipo_empleo_id`),
+  ADD KEY `fk_experiencia_laboral_Persona` (`Persona_id`),
+  ADD KEY `fk_experiencia_laboral_tipo_empleo1` (`tipo_empleo_id`);
+
+--
+-- Indices de la tabla `persona`
+--
+ALTER TABLE `persona`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `tipo_empleo`
+--
+ALTER TABLE `tipo_empleo`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `experiencia_laboral`
+--
+ALTER TABLE `experiencia_laboral`
+  ADD CONSTRAINT `fk_experiencia_laboral_Persona` FOREIGN KEY (`Persona_id`) REFERENCES `persona` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_experiencia_laboral_tipo_empleo1` FOREIGN KEY (`tipo_empleo_id`) REFERENCES `tipo_empleo` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
